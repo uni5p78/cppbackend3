@@ -30,13 +30,19 @@ namespace data{
 
     bool SqlServer::AddBook(Book book) {
         pqxx::work w(conn_);
-        w.exec(
-            "INSERT INTO books (title, author, year, ISBN) "
-            "VALUES ('" + w.esc(book.title) + "'"
-            ", '" + w.esc(book.author) + "'"
-            ", " + std::to_string(book.year) + ""
+        // std::string query = "INSERT INTO books (title, author, year, ISBN) "
+        //     "VALUES ('" + w.esc(book.title) + "'"
+        //     ", '" + w.esc(book.author) + "'"
+        //     ", " + std::to_string(book.year) + ""
+        //     ", " +  (book.ISBN ? w.quote(*(book.ISBN)) : "NULL") +
+        //     ");";
+        std::string query = "INSERT INTO books (title, author, year, ISBN) "
+            "VALUES (" + w.quote(w.esc(book.title)) + " "
+            ", " + w.quote(w.esc(book.author)) + " "
+            ", " + std::to_string(book.year) + " "
             ", " +  (book.ISBN ? w.quote(*(book.ISBN)) : "NULL") +
-            ");");
+            ");";
+        w.exec(query);
 
         // Применяем все изменения
         w.commit();
