@@ -1,0 +1,25 @@
+ТВ выкл
+	Команда Инфо без аргументов
+	Команда Инфо с аргументами
+	Команда Инфо с пробелами в конце
+	Команда TurnOn без аргументов
+	Команда TurnOn с аргументами
+	Команда SelectChannel с номером канала (ошибка "TV is turned off")
+	Команда SelectChannel без аргументов (ошибка "TV is turned off")
+	Команда SelectPreviousChannel с номером канала (ошибка "TV is turned off")
+	Команда SelectPreviousChannel без аргументов (ошибка "TV is turned off")
+ТВ вкл
+	Команда TurnOff без аргументов
+	Команда TurnOff с аргументами
+	Команда Инфо без аргументов
+	Команда Инфо с аргументами
+	Команда SelectChannel с номером канала
+	Команда SelectChannel без аргументов
+	Команда SelectChannel с номером канала дробное число
+	Команда SelectChannel с номером канала вне диапозона допустимых номеров канала
+	Команда SelectPreviousChannel без аргументов 
+	Команда SelectPreviousChannel с номером канала
+	
+
+
+	Команда SelectChannel без аргументов
