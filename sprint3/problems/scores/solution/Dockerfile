@@ -16,6 +16,8 @@ RUN mkdir /app/build && cd /app/build && \
 # Папка data больше не нужна
 COPY ./src /app/src
 COPY CMakeLists.txt /app/
+COPY ./tests /app/tests
+
 
 RUN cd /app/build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
@@ -35,4 +37,4 @@ COPY ./data /app/data
 COPY ./static /app/static
 
 # Запускаем игровой сервер
-ENTRYPOINT ["/app/game_server", "/app/data/config.json", "/app/static"]
+ENTRYPOINT ["/app/game_server", "-c", "/app/data/config.json", "-w", "/app/static"]

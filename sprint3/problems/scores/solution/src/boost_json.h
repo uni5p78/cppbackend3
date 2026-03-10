@@ -105,7 +105,7 @@ namespace boost_json
     JoinRequest ParseJoinRequest(const std::string& object);
 
     std::string GetMapsJson(const app::list_maps::Result& maps);
-    std::string GetMapJson(const app::map_info::Result& map, extra_data::ExtraData ext_data);
+    std::string GetMapJson(const app::map_info::Result& map, const extra_data::ExtraData& ext_data);
     std::string GetGameSateJsonBody(const app::game_state::Result& game_state);
     std::string GetPlayerJsonBody(const app::join_game::Result& player_data);
     std::string GetPlayersJsonBody(const app::players_list::Result& dogs);

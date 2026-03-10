@@ -143,7 +143,7 @@ fs::path GetAbsolutePath(const fs::path& static_content_path, const StringReques
     return fs::weakly_canonical(static_content_path / rel_path);
 }
 
-ApiHandler::ApiHandler(app::Application& app, const bool is_test_tick_mode, extra_data::ExtraData ext_data)
+ApiHandler::ApiHandler(app::Application& app, const bool is_test_tick_mode, extra_data::ExtraData& ext_data)
 : app_(app)
 , is_test_tick_mode_(is_test_tick_mode)
 , ext_data_(ext_data){

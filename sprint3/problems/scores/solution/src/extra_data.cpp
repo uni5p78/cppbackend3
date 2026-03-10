@@ -12,7 +12,7 @@ namespace extra_data{
         }
     }
 
-    boost::json::value ExtraData::GetLootTypesForMap(model::Map::Id map_id) {
+    boost::json::value ExtraData::GetLootTypesForMap(model::Map::Id map_id) const {
         return map_id_to_jvalue_.at(map_id);
     }
 

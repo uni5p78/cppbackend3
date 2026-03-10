@@ -88,7 +88,7 @@ boost::json::array GetOfficesArr(const app::map_info::Offices & offices){
     return res;
 }
 
-std::string GetMapJson(const app::map_info::Result& map, extra_data::ExtraData ext_data){
+std::string GetMapJson(const app::map_info::Result& map, const extra_data::ExtraData& ext_data){
     boost::json::object obj;
     obj[MapFields::ID] = map.id_map;
     obj[MapFields::NAME] = map.name_map;
@@ -138,7 +138,7 @@ std::string GetGameSateJsonBody(const app::game_state::Result& game_state){
     //Добавляем описания трофеев
     for(const auto& loot : game_state.loots){
         boost::json::object lost_obj;
-        lost_obj[GameSateFields::TYPE] = {loot.type};
+        lost_obj[GameSateFields::TYPE] = loot.type;
         lost_obj[GameSateFields::POS] = {loot.pos.x, loot.pos.y};
         lost_objects[loot.id] = lost_obj;
     }

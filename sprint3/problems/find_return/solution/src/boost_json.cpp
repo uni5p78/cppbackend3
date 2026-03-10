@@ -137,7 +137,7 @@ std::string GetGameSateJsonBody(const app::game_state::Result& game_state){
     //Добавляем описания трофеев
     for(const auto& loot : game_state.loots){
         boost::json::object lost_obj;
-        lost_obj[GameSateFields::TYPE] = {loot.type};
+        lost_obj[GameSateFields::TYPE] = loot.type;
         lost_obj[GameSateFields::POS] = {loot.pos.x, loot.pos.y};
         lost_objects[loot.id] = lost_obj;
     }

@@ -75,7 +75,7 @@ StringResponse MakeStringResponse(http::status status, std::string_view body, un
 
 class ApiHandler {
 public:
-    explicit ApiHandler(app::Application& app, const bool is_test_tick_mode, extra_data::ExtraData ext_data);
+    explicit ApiHandler(app::Application& app, const bool is_test_tick_mode, extra_data::ExtraData& ext_data);
     StringResponse HandleApiRequest(const StringRequest& req);    
     StringResponse ListMaps(const StringRequest& req) const ;
     StringResponse GetMapInfo(std::string_view map_name, const StringRequest& req) const;

@@ -36,15 +36,24 @@ void RunWorkers(unsigned n, const Fn& fn) {
 int main(int argc, const char* argv[]) {
     logger::InitLogFilter();
     try {
+// ------------------------------------------------------------------------------------
         auto args = comand_line::ParseCommandLine(argc, argv);
         if (!args) {
             return EXIT_SUCCESS;
         }
         std::string config_file(args->config_file);
         std::string static_content_path(args->www_root);
+        bool randomize_spawn_points = args->randomize_spawn_points;
+        auto tick_period = args->tick_period; 
+
+        // std::string config_file("../../data/config.json");
+        // std::string static_content_path("../../static");
+        // bool randomize_spawn_points = true;
+        // int tick_period = 1000;
+// ------------------------------------------------------------------------------------
 
         // 1. Загружаем карты и настройки из файла и строим модель игры
-        model::Game game(args->randomize_spawn_points);
+        model::Game game(randomize_spawn_points);
         extra_data::ExtraData ext_data;
         json_loader::LoadGame(game, config_file, ext_data);
 
@@ -61,7 +70,7 @@ int main(int argc, const char* argv[]) {
         // strand для выполнения запросов к API
         app::Application application(game);
         auto api_strand = net::make_strand(ioc);
-        const bool is_test_tick_mode = args->tick_period == 0; 
+        const bool is_test_tick_mode = tick_period == 0; 
         auto handler = std::make_shared<http_handler::RequestHandler>(application, static_content_path, api_strand, is_test_tick_mode, ext_data);
         log_handler::LoggingRequestHandler logging_handler{*handler};
 
@@ -77,7 +86,7 @@ int main(int argc, const char* argv[]) {
 
         // 6. Настраиваем вызов метода Application::Tick каждые хх миллисекунд внутри strand
         if(!is_test_tick_mode){
-            auto ticker = std::make_shared<tick::Ticker>(api_strand, std::chrono::milliseconds(args->tick_period),
+            auto ticker = std::make_shared<tick::Ticker>(api_strand, std::chrono::milliseconds(tick_period),
                 [&application](std::chrono::milliseconds delta) { application.ChangeGameState(delta); }
             );
             ticker->Start();
