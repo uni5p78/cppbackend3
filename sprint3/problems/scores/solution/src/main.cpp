@@ -36,7 +36,6 @@ void RunWorkers(unsigned n, const Fn& fn) {
 int main(int argc, const char* argv[]) {
     logger::InitLogFilter();
     try {
-// ------------------------------------------------------------------------------------
         auto args = comand_line::ParseCommandLine(argc, argv);
         if (!args) {
             return EXIT_SUCCESS;
@@ -45,12 +44,6 @@ int main(int argc, const char* argv[]) {
         std::string static_content_path(args->www_root);
         bool randomize_spawn_points = args->randomize_spawn_points;
         auto tick_period = args->tick_period; 
-
-        // std::string config_file("../../data/config.json");
-        // std::string static_content_path("../../static");
-        // bool randomize_spawn_points = true;
-        // int tick_period = 1000;
-// ------------------------------------------------------------------------------------
 
         // 1. Загружаем карты и настройки из файла и строим модель игры
         model::Game game(randomize_spawn_points);
