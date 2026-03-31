@@ -588,12 +588,12 @@ ItemGathererContaner::Items AddLootsAndOfficesInContaner (const model::GameSessi
 void CalcLootCollection(const ItemGathererContaner::Gatherers& gatherers, const model::GameSession& session){
     auto items = AddLootsAndOfficesInContaner(session);
     auto gathering_events = FindGatherEvents(ItemGathererContaner{items, gatherers});
-
+    auto dogs = session.GetDogs();
+    auto map = session.GetMap();
+    int bag_capacity = map.GetBagCapacity();
     for (const auto& event : gathering_events) {
-        auto& dog = session.GetDogs().at(event.gatherer_id);
+        auto& dog = dogs.at(event.gatherer_id);
         auto item = items[event.item_id];
-        auto map = session.GetMap();
-        int bag_capacity = map.GetBagCapacity();
         auto loots = session.GetLoots();
         auto bag = dog->GetBag();
 
