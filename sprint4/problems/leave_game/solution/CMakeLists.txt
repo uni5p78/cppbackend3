@@ -47,10 +47,10 @@ add_executable(game_server
 	src/http/http_server.h
 	src/http/request_handler.cpp
 	src/http/request_handler.h
-	src/log/logger.cpp
-	src/log/logger.h
-	src/log/logging_request_handler.cpp
-	src/log/logging_request_handler.h
+	src/logger/logger.cpp
+	src/logger/logger.h
+	src/logger/logging_request_handler.cpp
+	src/logger/logging_request_handler.h
 	src/app/application.cpp
 	src/app/application.h
 	src/app/tick.cpp
