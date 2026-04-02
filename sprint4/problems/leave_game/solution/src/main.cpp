@@ -61,19 +61,7 @@ AppParam GetAppParam(const comand_line::Args& args){
     return param;
 }
 
-AppParam GetAppParam(){
-    AppParam param;
-    param.config_file = "../../data/config.json";
-    param.static_content_path = "../../static";
-    param.randomize_spawn_points = true;
-    param.save_state_period = 10;
-    // param.state_file = "";
-    param.state_file = "/home/anton/sprint4/tema1/6_state_serialization_/build/state_file_01.txt";
-    param.tick_period = 0;
-    param.db_url = "postgres://postgres:123@localhost:5432/anton_tast";
-    return param;
-}
-
+const unsigned MAX_THREADS = 4;
  
 }  // namespace
 
@@ -85,7 +73,6 @@ AppParam GetAppParam(){
             return EXIT_SUCCESS;
         }
         auto app_param = GetAppParam(*args);
-        // auto app_param = GetAppParam();
 
         // 1. Загружаем карты и настройки из файла и строим модель игры
         model::Game game(app_param.randomize_spawn_points);
@@ -93,7 +80,7 @@ AppParam GetAppParam(){
         json_loader::LoadGame(game, app_param.config_file, ext_data);
 
         // 2. Инициализируем io_context
-        const unsigned num_threads = std::thread::hardware_concurrency();
+        const unsigned num_threads = std::min(std::thread::hardware_concurrency(), unsigned(MAX_THREADS));
         net::io_context ioc(num_threads);
 
         // 3. Добавляем асинхронный обработчик сигналов SIGINT и SIGTERM
@@ -102,7 +89,7 @@ AppParam GetAppParam(){
             if (!ec) {ioc.stop();}
         });
         // Инициализируем базу данных 
-        db::Database data_base{app_param.db_url, std::min(num_threads, unsigned(4))};
+        db::Database data_base{app_param.db_url, num_threads};
 
         // 4. Создаём обработчик HTTP-запросов и связываем его с моделью игры через объект с сценариями игры (application)
         // strand для выполнения запросов к API
@@ -113,31 +100,6 @@ AppParam GetAppParam(){
         if (app_param.save_state_period > 0 && !app_param.state_file.empty()) {
             application.SetListener(&serializer);
         }
-//--------------------------------------------------------------------------------
-        // {
-        //     std::string map = "map1";
-        //     std::string player_name = "pl";
-        //     std::string directs = "UDLR";
-        //     std::vector<std::string> tokens;
-        //     int player_count = 500;
-        //     tokens.reserve(player_count);
-
-        //     std::random_device random_device_;
-        //     std::uniform_int_distribution<int> chr_idx(0, directs.size()-1);
-
-
-        //     for (int i = 0; i < player_count; ++i) {
-        //         auto pl = application.AddPlayer(player_name+"_"+std::to_string(i), map);
-        //         tokens.push_back(*pl.token);
-        //     }
-
-        //     for (const auto& token : tokens) {
-        //         char random_direct = directs[chr_idx(random_device_)];
-        //         application.SetDogDirect(token, random_direct);
-        //     }
-        // }
-
-//--------------------------------------------------------------------------------
         auto api_strand = net::make_strand(ioc);
         const bool tick_mode = app_param.tick_period > 0; 
         auto handler = std::make_shared<http_handler::RequestHandler>(application, app_param.static_content_path, api_strand, !tick_mode, ext_data);
@@ -160,7 +122,6 @@ AppParam GetAppParam(){
             );
             ticker->Start();
         }
-
         // Эта надпись сообщает тестам о том, что сервер запущен и готов обрабатывать запросы
         logger::LogServerStarted(port, address.to_string());
         // Загружаем состояние игры из файла если указан файл

@@ -45,7 +45,7 @@ std::vector<GatheringEvent> FindGatherEvents(const ItemGathererProvider& provide
     }
     // Сортируем события по возрастанию времени
     auto comp_sort = [](const GatheringEvent& a, const GatheringEvent& b){
-        return a.time <= b.time;
+        return a.time < b.time;
     };
     std::sort(std::begin(res), std::end(res), comp_sort);
 

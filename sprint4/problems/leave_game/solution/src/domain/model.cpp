@@ -305,17 +305,7 @@ void Dog::Stop(){
 }
 
 char Dog::GetDirSymbol() const {
-    switch (dir_)
-    {
-    case Dir::Left:
-                    return 'L';
-    case Dir::Right:
-                    return 'R';
-    case Dir::Up:
-                    return 'U';
-    default:
-                    return 'D';
-    } 
+    return static_cast<char>(dir_);
 }  
 
 Dog::Dir Dog::GetDir() const {
@@ -328,8 +318,15 @@ void Dog::SetDirSpeed(Dir dir, Dimension dog_speed){
         return;
     }
     dir_ = dir;
-    dog_speed *= dir == Dir::Left || dir == Dir::Up ? -1.0 : 1.0;
-    auto speed = dir == Dir::Left || dir == Dir::Right ? Speed{dog_speed, 0.0} : Speed{0.0, dog_speed};
+    if (dir == Dir::Left || dir == Dir::Up) {
+        dog_speed = -dog_speed;
+    }
+    Speed speed{};
+    if (dir == Dir::Left || dir == Dir::Right) {
+        speed.dir_x = dog_speed;
+    } else {
+        speed.dir_y = dog_speed;
+    }
     SetSpeed(speed);
 }
 
@@ -592,8 +589,8 @@ void CalcLootCollection(const ItemGathererContaner::Gatherers& gatherers, const 
     auto map = session.GetMap();
     int bag_capacity = map.GetBagCapacity();
     for (const auto& event : gathering_events) {
-        auto& dog = dogs.at(event.gatherer_id);
-        auto item = items[event.item_id];
+        const auto& dog = dogs.at(event.gatherer_id);
+        const auto& item = items.at(event.item_id);
         auto loots = session.GetLoots();
         auto bag = dog->GetBag();
 
