@@ -19,7 +19,7 @@ using namespace std::literals;
         ("save-state-period", po::value(&args.save_state_period)->value_name("ms"s), "set save state period")
         ("state-file", po::value(&args.state_file)->value_name("file"s), "set state file path")
         ("randomize-spawn-points", "spawn dogs at random positions")
-        ;
+       ;
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);

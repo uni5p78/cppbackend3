@@ -71,7 +71,7 @@ namespace app {
 
     namespace list_maps {
       
-        const list_maps::Result UseCase::ListMaps() {
+        const list_maps::Result UseCase::ListMaps() const {
             auto maps = game_.GetMaps();
             list_maps::Result res(maps.size());
             size_t i = 0;

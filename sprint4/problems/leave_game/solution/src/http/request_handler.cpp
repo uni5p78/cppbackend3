@@ -68,11 +68,8 @@ StringResponse ErrorResponseJson(http::status status, std::string_view code, std
     return MakeStringResponse(status, body, req.version(), req.keep_alive(), req.method()); 
 }
 
-StringResponse ErrorResponseJson(http::status status, const StringRequest& req){
-    if(status == http::status::bad_request){
-        return ErrorResponseJson(status, "badRequest", "Bad request", req);
-    } 
-    throw;
+StringResponse BadRequestJson(const StringRequest& req){
+    return ErrorResponseJson(http::status::bad_request, "badRequest", "Bad request", req);
 }
 
 std::vector<std::string_view> SplitQueryLine(std::string_view sv, char ch){
@@ -140,7 +137,7 @@ std::string UriPercentDecoding(std::string_view sv){
 
 fs::path GetAbsolutePath(const fs::path& static_content_path, const StringRequest& req){
     auto target = req.target();
-    std::string query(target.substr(1).data(), target.size()-1);
+    std::string query(target.substr(1).data(), target.size() - 1);
     fs::path rel_path = {UriPercentDecoding(query)};
     return fs::weakly_canonical(static_content_path / rel_path);
 }
@@ -155,7 +152,7 @@ std::pair<std::vector<std::string>
 , std::map<std::string, std::string>>
  ParseQuery(const StringRequest& req){
     auto target = req.target();
-    std::string query(target.substr(1).data(), target.size()-1);
+    std::string query(target.substr(1).data(), target.size() - 1);
     auto query_parts = SplitQueryLine(query, '?');
     auto part1 = query_parts[0];
     auto query_words = SplitQueryLine(part1, '/');  
@@ -163,7 +160,7 @@ std::pair<std::vector<std::string>
         throw std::logic_error("Bad format URL param " + query);
     }
     std::map<std::string, std::string>  params;
-    if (query_parts.size()==2){
+    if (query_parts.size() == 2){
         auto params_str = SplitQueryLine(query_parts[1], '&');
         for (auto par : params_str) {
             auto name_value = SplitQueryLine(par, '=');
@@ -232,7 +229,7 @@ std::optional<StringResponse> ApiHandler::CheckMethodRequest(const StringRequest
 }
 
 std::optional<StringResponse> ApiHandler::CheckPlayerToken(const StringRequest& req){
-    if(req.count(http::field::authorization)==0 || req.at(http::field::authorization).size() != 39){
+    if(req.count(http::field::authorization) == 0 || req.at(http::field::authorization).size() != 39){
         return ErrorResponseJson(http::status::unauthorized, "invalidToken","Authorization header is missing", req);
     }
 
@@ -455,11 +452,11 @@ StringResponse RequestHandler::HandleApiRequest(const StringRequest& req) {
 
 bool RequestHandler::IsApiRequest(const StringRequest& req){
     auto target = req.target();
-    std::string query(target.substr(1).data(), target.size()-1);
+    std::string query(target.substr(1).data(), target.size() - 1);
     return query.substr(0,3) == "api"s;
 }
 
 StringResponse RequestHandler::ReportServerError(const StringRequest& req){
-    return ErrorResponseJson(http::status::bad_request, req);
+    return BadRequestJson(req);
 }
 }  // namespace http_handler

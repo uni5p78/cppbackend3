@@ -32,7 +32,7 @@ namespace app {
         const Player* AddPlayer(model::GameSession* session, model::Dog* dog);
         void AddPlayer(Player&& new_player);
         Player* FindByToken(const Player::Token& token) const noexcept;
-        const ArrPlayersUPtr& GetPlayers() const ;
+        const ArrPlayersUPtr& GetPlayers() const;
         void DeletePlayerForDog(model::Dog* dog);
     private:
         using TokenToPlayer = std::unordered_map<Player::Token, Player*, util::TaggedHasher<Player::Token>>;
@@ -71,11 +71,11 @@ namespace app {
 
         class UseCase {
         public:
-            UseCase(model::Game& game)
+            explicit UseCase(model::Game& game)
             : game_(game){
             }
             
-            const list_maps::Result ListMaps();
+            const list_maps::Result ListMaps() const;
         private:
             model::Game& game_;
         };
@@ -104,7 +104,7 @@ namespace app {
         using Offices = std::vector<Office>;
 
         struct Result {
-            Result(const model::Map& map);
+            explicit Result(const model::Map& map);
             std::string name_map;
             std::string id_map;
             Roads roads_;
@@ -118,13 +118,13 @@ namespace app {
 
         class Error : public std::exception {
         public:
-            Error(ErrorReason reason);
+            explicit Error(ErrorReason reason);
             ErrorReason reason_;
         };
 
         class UseCase {
         public:
-            UseCase(model::Game& game);
+            explicit UseCase(model::Game& game);
             const map_info::Result GetMapInfo(const std::string_view map_name);
         private:
             model::Game& game_;
@@ -146,7 +146,7 @@ namespace app {
 
         class Error : public std::exception {
         public:
-            Error(ErrorReason reason);
+            explicit Error(ErrorReason reason);
             ErrorReason reason_;
         };
 
@@ -240,7 +240,7 @@ namespace app {
         Application(const Application&) = delete;
         void operator=(const Application&) = delete;
     
-        Player* FindPlayer(const std::string_view& token) const noexcept ;
+        Player* FindPlayer(const std::string_view& token) const noexcept;
         const list_maps::Result ListMaps();
         const join_game::Result AddPlayer(const std::string& user_name, const std::string& map_id);
         void AddPlayer(Player&& new_player);
@@ -252,8 +252,8 @@ namespace app {
         char ConvertDogDirect(const std::string direct);
         void SetListener(ApplicationListener* listener);
         model::Game& GetGameObj() const;
-        const ArrPlayersUPtr& GetPlayers() const ;
-        const model::Records GetRecords(int start, int max_items) const ;
+        const ArrPlayersUPtr& GetPlayers() const;
+        const model::Records GetRecords(int start, int max_items) const;
         model::RetireListenerI* GetRecordsUseCase();
     private:
         Players players_;

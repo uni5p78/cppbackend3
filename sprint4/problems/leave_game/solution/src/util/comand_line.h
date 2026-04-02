@@ -16,6 +16,6 @@ namespace comand_line
         bool randomize_spawn_points{};
     }; 
 
-    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]) ;
+    [[nodiscard]] std::optional<Args> ParseCommandLine(int argc, const char* const argv[]);
 } 
 

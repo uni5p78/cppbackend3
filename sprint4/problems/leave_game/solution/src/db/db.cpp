@@ -16,7 +16,7 @@ namespace db {
     const model::Records RecordRepositoryImpl::GetRecords(int start, int max_items) const {
         model::Records res;
         auto query_text = "SELECT name, score, playTime FROM retired_players"
-        " ORDER BY score Desc, playTime, name LIMIT "+std::to_string(max_items)+" OFFSET "+std::to_string(start)+";";
+        " ORDER BY score Desc, playTime, name LIMIT " + std::to_string(max_items) + " OFFSET " + std::to_string(start) + ";";
         // Выполняем запрос и итерируемся по строкам ответа
         for (auto [name, score, play_time] : read_transaction_->query<std::string_view, int, double>(query_text)) {
             res.emplace_back(std::string(name), score, play_time);

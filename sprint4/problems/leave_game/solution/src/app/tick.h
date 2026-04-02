@@ -15,7 +15,7 @@ namespace tick
         using Handler = std::function<void(std::chrono::milliseconds delta)>;
         // Функция handler будет вызываться внутри strand с интервалом period
         Ticker(Strand strand, std::chrono::milliseconds period, Handler handler);
-        void Start() ;
+        void Start();
     private:
         void ScheduleTick();
         void OnTick(sys::error_code ec);

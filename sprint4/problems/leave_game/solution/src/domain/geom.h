@@ -1,4 +1,4 @@
-
+#pragma once
 
 namespace geom {
     using coord = double;

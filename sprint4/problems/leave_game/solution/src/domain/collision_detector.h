@@ -12,7 +12,7 @@ enum class  ItemType {LOOT, OFFICE};
 
 struct CollectionResult {
     bool IsCollected(double width_obj_1, double width_obj_2) const {
-        double sq_distance_other = std::pow((width_obj_1+width_obj_2)/2.0, 2);
+        double sq_distance_other = std::pow((width_obj_1 + width_obj_2)/2.0, 2);
         return proj_ratio >= 0 && proj_ratio <= 1 && sq_distance <= sq_distance_other;
     }
 

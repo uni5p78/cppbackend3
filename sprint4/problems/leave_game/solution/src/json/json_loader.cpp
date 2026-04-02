@@ -114,7 +114,7 @@ void SetParamsForGameModel(model::Game& game, const json_w::JsonValue& json_obj)
     
     // Устанавливаем время простоя собаки, после которого игрока исключают из игры
     if(json_obj.ContainsParam(ConfigFields::DOG_RETIREMENT_TIME)){ //если есть
-        auto time_Double = json_obj.GetParamAsDouble(ConfigFields::DOG_RETIREMENT_TIME)*1000;
+        auto time_Double = json_obj.GetParamAsDouble(ConfigFields::DOG_RETIREMENT_TIME) * 1000;
         std::chrono::milliseconds time{int(time_Double)};
         game.SetDogRetirementTime(time);
     } else {

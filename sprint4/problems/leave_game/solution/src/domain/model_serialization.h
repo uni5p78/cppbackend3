@@ -72,8 +72,8 @@ private:
     model::Dog::Dir dir_ = model::Dog::Dir::Up;
     int score_ = 0;
     model::Dog::LootIdList bag_;
-    long int enter_time_{};
-    long int stop_time_{};
+    int64_t enter_time_{};
+    int64_t stop_time_{};
     bool stopped_ = true;
 
 };
@@ -119,7 +119,7 @@ public:
     void AddDogRepr(const model::Dog& dog);
     void AddSessionRepr(const model::GameSession& session);
     void AddPlayerRepr(const app::Player& player);
-    void SetTimeNow(std::chrono::milliseconds now) ;
+    void SetTimeNow(std::chrono::milliseconds now);
 
         template <typename Archive>
     void serialize(Archive& ar, [[maybe_unused]] const unsigned version);
@@ -133,7 +133,7 @@ private:
     std::vector<SessionRepr> sessions_;
     PointerSessionToInd pointer_sesion_to_ind_; 
     std::vector<PayerRepr> players_;
-    long int time_now_{};
+    int64_t time_now_{};
 };
 
 

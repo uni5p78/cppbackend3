@@ -132,7 +132,7 @@ Pos Map::GetRandomPos() const {
         return {0.0, 0.0};
     }
     std::random_device random_device_;
-    std::uniform_int_distribution<int> dist_roads(0, roads.size()-1);
+    std::uniform_int_distribution<int> dist_roads(0, roads.size() - 1);
     int random_road = dist_roads(random_device_);
     auto road = roads[random_road];
     auto start = road.GetStart();
@@ -157,7 +157,7 @@ Pos Map::GetStartPos() const {
 
 int Map::GetRandomLootType() const {
     std::random_device random_device_;
-    std::uniform_int_distribution<int> dist_types(0, loot_types_count_-1);
+    std::uniform_int_distribution<int> dist_types(0, loot_types_count_ - 1);
     return dist_types(random_device_);
 }
 
@@ -331,10 +331,10 @@ void Dog::SetDirSpeed(Dir dir, Dimension dog_speed){
 }
 
 bool Dog::CheckDirSymbol(char dir){
-    if(dir!=static_cast<char>(Dir::Down) 
-    && dir!=static_cast<char>(Dir::Left)
-    && dir!=static_cast<char>(Dir::Right)
-    && dir!=static_cast<char>(Dir::Up)){
+    if(dir != static_cast<char>(Dir::Down) 
+    && dir != static_cast<char>(Dir::Left)
+    && dir != static_cast<char>(Dir::Right)
+    && dir != static_cast<char>(Dir::Up)){
         throw std::invalid_argument("Invalid syntax dog direct.");
     }
     return dir;
@@ -342,7 +342,7 @@ bool Dog::CheckDirSymbol(char dir){
 
 void Dog::SetNewPosOnRoad(const Map& map, const Milliseconds time_delta){
     auto speed_dir = GetSpeed();  
-    if (speed_dir.dir_x==0.0 && speed_dir.dir_y==0.0 ) { // Если собака стоит
+    if (speed_dir.dir_x == 0.0 && speed_dir.dir_y == 0.0 ) { // Если собака стоит
         return; // то мы ее не трогаем)
     };
     const CoordFloat HalfWideRoad = 0.4;
@@ -366,7 +366,7 @@ void Dog::SetNewPosOnRoad(const Map& map, const Milliseconds time_delta){
     int point2_int = round(point2); 
     bool to_right = speed>0;
     // Проверка наличия препятствий на пути собаки
-    if ((point1_int != point2_int) || (std::abs(point2-point2_int) >= HalfWideRoad)){
+    if ((point1_int != point2_int) || (std::abs(point2 - point2_int) >= HalfWideRoad)){
         // Если собака вышла из начаьного кадрата дороги
         // Проверим - есть дальше дорога?)
         auto point_end = map.GetEndOfPath(IsHorizontal, to_right, level_int, point1_int);
@@ -568,7 +568,7 @@ ItemGathererContaner::Items AddLootsAndOfficesInContaner (const model::GameSessi
     items.reserve(items.size() + offices_count);
     for(size_t i = 0; i < offices_count; i++) {
         auto pos = offices.at(i).GetPosition();
-        items.emplace_back(geom::Point2D{0.0+pos.x, 0.0+pos.y}, Width::OFFICE, ItemType::OFFICE, i);
+        items.emplace_back(geom::Point2D{0.0 + pos.x, 0.0 + pos.y}, Width::OFFICE, ItemType::OFFICE, i);
     }
     return items;
 }
@@ -701,13 +701,6 @@ void Game::AddDog(Dog&& dog){
     dogs_.push_back(std::make_unique<Dog>(std::move(dog)));
 }
 
-const Dog& Game::GetDog(Dog::Id id) const {
-    if(*id < dogs_.size()){
-        return *dogs_[*id];
-    }
-    throw;
-}
-
 int Loots::GetCount() const {
     return loots_on_map_count_;
 }
@@ -724,7 +717,7 @@ void Loots::AddLoot(Loot loot) {
     }
     if(!insert) {
         loots_.push_back(loot);
-        id = loots_.size()-1;
+        id = loots_.size() - 1;
     }
     SetLootStatusById(id, LootStatus::ON_MAP);
 }
@@ -740,12 +733,10 @@ const Loots::LootsVector& Loots::GetLootsList() const {
 
 void Loots::SetLootsList(LootsVector loots_arr){
     loots_ = std::move(loots_arr);
-    loots_on_map_count_ = 0;
-    for (const auto& loot :loots_) {
-        if (loot.status_ == LootStatus::ON_MAP) {
-            loots_on_map_count_++;
-        }
-    }
+    loots_on_map_count_ = std::count_if(loots_.begin(), loots_.end()
+    , [](const auto& loot){
+        return loot.status_ == LootStatus::ON_MAP;
+    });
 }
 
 

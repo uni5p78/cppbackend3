@@ -63,10 +63,10 @@ public:
 
     Road(HorizontalTag, Point start, Coord end_x) noexcept;
     Road(VerticalTag, Point start, Coord end_y) noexcept;
-    bool IsHorizontal() const noexcept ;
+    bool IsHorizontal() const noexcept;
     bool IsVertical() const noexcept;
     Point GetStart() const noexcept;
-    Point GetEnd() const noexcept ;
+    Point GetEnd() const noexcept;
 private:
     Point start_;
     Point end_;
@@ -75,7 +75,7 @@ private:
 class Building {
 public:
     explicit Building(Rectangle bounds) noexcept;
-    const Rectangle& GetBounds() const noexcept ;
+    const Rectangle& GetBounds() const noexcept;
 private:
     Rectangle bounds_;
 };
@@ -84,9 +84,9 @@ class Office {
 public:
     using Id = util::Tagged<std::string, Office>;
     Office(Id id, Point position, Offset offset) noexcept;
-    const Id& GetId() const noexcept ;
-    Point GetPosition() const noexcept ;
-    Offset GetOffset() const noexcept ;
+    const Id& GetId() const noexcept;
+    Point GetPosition() const noexcept;
+    Offset GetOffset() const noexcept;
 private:
     Id id_;
     Point position_;
@@ -102,8 +102,8 @@ class Dog {
         using TimePoint = std::chrono::milliseconds;
         using Milliseconds = std::chrono::milliseconds;
         Dog(std::string user_name, Id id) noexcept;
-        const Id& GetId() const noexcept ;
-        const std::string& GetName() const noexcept ;
+        const Id& GetId() const noexcept;
+        const std::string& GetName() const noexcept;
     
         using Dimension = CoordFloat;
         struct Speed {
@@ -164,11 +164,11 @@ public:
     using Offices = std::vector<Office>;
 
     Map(Id id, std::string name) noexcept;
-    const Id& GetId() const noexcept ;
-    const std::string& GetName() const noexcept ;
-    const Buildings& GetBuildings() const noexcept ;
-    const Roads& GetRoads() const noexcept ;
-    const Offices& GetOffices() const noexcept ;
+    const Id& GetId() const noexcept;
+    const std::string& GetName() const noexcept;
+    const Buildings& GetBuildings() const noexcept;
+    const Roads& GetRoads() const noexcept;
+    const Offices& GetOffices() const noexcept;
     void AddRoad(const Road&& road);
     void AddBuilding(const Building& building);
     void AddOffice(Office office);
@@ -180,8 +180,8 @@ public:
     int GetBagCapacity() const;
     Dog::Dimension GetDogSpeed() const;
     void BildListOderedPath();
-    Dimension GetEndOfPath(bool IsHorizontal, bool to_right, Dimension level_dog, Dimension point_dog) const ;
-    Dimension GetEndOfPathV(Dimension level_dog, Dimension point_dog, bool to_right) const ;
+    Dimension GetEndOfPath(bool IsHorizontal, bool to_right, Dimension level_dog, Dimension point_dog) const;
+    Dimension GetEndOfPathV(Dimension level_dog, Dimension point_dog, bool to_right) const;
     void SetLootTypesCount(int count);
     void SetLootsValue(std::vector<int>&& loots_value); 
     int GetLootValue(int idx) const; 
@@ -194,7 +194,7 @@ private:
     class OrderedListPaths {
     public:
         void BildListOderedPath();
-        Dimension GetEndOfPath(Dimension level_dog, Dimension point_dog, bool to_right) const ;
+        Dimension GetEndOfPath(Dimension level_dog, Dimension point_dog, bool to_right) const;
         void AddPath(Coord base, Coord point1, Coord point2);
     private:
         std::vector<Path> paths_;
@@ -274,14 +274,13 @@ public:
     using DogPointers = std::vector<std::unique_ptr<Dog>>;
     Game(bool randomize_spawn_points);
     void AddMap(Map map);
-    const Maps& GetMaps() const noexcept ;
-    const Map* FindMap(const Map::Id& id) const noexcept ;
+    const Maps& GetMaps() const noexcept;
+    const Map* FindMap(const Map::Id& id) const noexcept;
     // No copy functions.
     Game(const Game&) = delete;
     void operator=(const Game&) = delete;
     Dog* AddDog(std::string name);
     void AddDog(Dog&& dog);
-    const Dog& GetDog(Dog::Id id) const ;
     GameSession* GetSession(const Map* map);
     void AddSession(GameSession&& new_session);
     void SetDefaultDogSpeed(Dog::Dimension dog_speed);
